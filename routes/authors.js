@@ -30,4 +30,43 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+router.get('/menos20colombia/', async (req, res) => {
+  try {
+    // let filters = { $and:[ pais: "Colombia", publicaciones: {$lte: 20}]};
+    let filters = {  $and: [ { pais: "Colombia" }, { publicados: { $lte: 20 } } ]  };
+    let projection = "nombre apellido";
+    const authors = await Author.find(filters, projection);
+    res.json(authors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/conapellido/', async (req, res) => {
+  try {
+    // let filters = { $and:[ pais: "Colombia", publicaciones: {$lte: 20}]};
+    let filters = {    apellido: { $exists: true }    };
+    let projection = "nombre";
+    const authors = await Author.find(filters, projection);
+    res.json(authors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/mas20oargentina/', async (req, res) => {
+  try {
+    // let filters = { $and:[ pais: "Colombia", publicaciones: {$lte: 20}]};
+    let filters = {  $or: [ { pais: "Argentina" }, { publicados: { $gte: 20 } } ]  };
+    let projection = "apellido";
+    const authors = await Author.find(filters, projection);
+    res.json(authors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
 module.exports = router;
